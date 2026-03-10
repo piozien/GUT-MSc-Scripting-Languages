@@ -1,0 +1,9 @@
+{
+  "python.defaultInterpreterPath": ".venv\\Scripts\\python.exe",
+  "code-runner.executorMap": {
+    "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && ./$fileNameWithoutExt",
+    "python": "cd $dir && ..\\.venv\\Scripts\\python.exe -u $fileName"
+  },
+  "code-runner.runInTerminal": true,
+  "code-runner.fileDirectoryAsCwd": true
+}

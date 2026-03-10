@@ -17,7 +17,7 @@ uint64_t my_factorial(int32_t k) {
 
 int main() {
     std::vector<int64_t> num;
-    std::ifstream input_file("../../data/random_numbers.txt");
+    std::ifstream input_file("../data/random_numbers.txt");
     if (!input_file.is_open()) {
         std::cerr << "Error file not found!" << std::endl;
         return 1;
@@ -30,7 +30,7 @@ int main() {
     input_file.close();
 
     size_t length = num.size();
-    int64_t n = 10000;
+    int64_t n = 127;
 
     std::vector<uint64_t> results_for_file;
     for (int32_t m : num) {
@@ -60,29 +60,56 @@ int main() {
 
     double delta_time = full_time - empty_time;
 
-    std::ofstream report_file("../../result/cpp_factorial_report.txt");
+    std::ofstream report_file("../result/cpp_factorial_report.txt");
 
     for (uint64_t res : results_for_file) {
         report_file << res << "\n";
     }
 
     report_file << "\n" << std::string(40, '=') << "\n";
-    report_file << "PERFORMANCE REPORT: factorial (C++ implementation)\n";
-    report_file << std::string(40, '=') << "\n";
-    report_file << "Number of unique data entries: " << length << "\n";
-    report_file << "Number of repetitions (n): " << n << "\n";
-    report_file << "Total function executions: " << (int64_t)length * n << "\n";
-    report_file << std::string(40, '-') << "\n";
-    report_file << std::fixed << std::setprecision(6);
-    report_file << "Full time: " << full_time << " s\n";
-    report_file << "Empty loop time: " << empty_time << " s\n";
-    report_file << "Net function time: " << delta_time << " s\n";
-    report_file << std::setprecision(12);
-    report_file << "Average time per execution: " << delta_time / (double)(length * n) << " s\n";
-    report_file << std::string(40, '=') << "\n";
+report_file << "PERFORMANCE REPORT: factorial (C++ implementation)\n";
+report_file << std::string(40, '=') << "\n";
+report_file << "Number of unique data entries: " << length << "\n";
+report_file << "Number of repetitions (n): " << n << "\n";
+report_file << "Total function executions: " << (int64_t)length * n << "\n";
+report_file << std::string(40, '-') << "\n";
 
-    report_file.close();
-    std::cout << "Done!" << std::endl;
+report_file << std::fixed << std::setprecision(6);
+report_file << "Full time: " << full_time << " s\n";
+report_file << "Empty loop time: " << empty_time << " s\n";
+report_file << "Net function time: " << delta_time << " s\n";
+
+report_file << std::setprecision(12);
+report_file << "Average time per execution: " << delta_time / (double)(length * n) << " s\n";
+report_file << std::string(40, '=') << "\n";
+
+double timer_res = 1e-6; // 1 ms
+double rel_error = (timer_res / delta_time) * 100.0;
+
+report_file << "\n" << std::string(40, '=') << "\n";
+report_file << "ERROR ANALYSIS (Requirement: < 1%)\n";
+report_file << std::string(40, '=') << "\n";
+
+report_file << "Assumed timer resolution: " << std::scientific << std::setprecision(1) << timer_res << " s\n";
+report_file << std::fixed << std::setprecision(6);
+report_file << "Net function time (T_net): " << delta_time << " s\n";
+report_file << std::string(40, '-') << "\n";
+
+report_file << "Calculation: (" << std::scientific << std::setprecision(1) << timer_res
+            << " / " << std::fixed << std::setprecision(6) << delta_time << ") * 100%\n";
+report_file << std::string(40, '-') << "\n";
+
+report_file << "RELATIVE ERROR: " << std::setprecision(8) << rel_error << " %\n";
+
+if (rel_error < 1.0) {
+    report_file << "STATUS: COMPLIANT (Error is below 1%)\n";
+} else {
+    report_file << "STATUS: NON-COMPLIANT (Increase 'n' to extend time)\n";
+}
+report_file << std::string(40, '=') << "\n";
+
+report_file.close();
+std::cout << "Done!" << std::endl;
 
     return 0;
 }

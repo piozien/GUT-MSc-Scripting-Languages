@@ -15,7 +15,7 @@ def run_test():
         return
 
     length = len(num)
-    n = 10000
+    n = 14
 
     results_for_file = [my_factorial(m) for m in num]
 
@@ -51,6 +51,24 @@ def run_test():
         f.write(f"Empty loop time: {empty_time:.6f} s\n")
         f.write(f"Net function time: {delta_time:.6f} s\n")
         f.write(f"Average time per execution: {delta_time / (length * n):.12f} s\n")
+        f.write("=" * 40 + "\n")
+        timer_res = 1e-6
+        rel_error = (timer_res / delta_time) * 100
+
+        f.write("\n" + "=" * 40 + "\n")
+        f.write("ERROR ANALYSIS (Requirement: < 1%)\n")
+        f.write("=" * 40 + "\n")
+        f.write(f"Assumed timer resolution: {timer_res:.1e} s\n")
+        f.write(f"Net function time (T_net): {delta_time:.6f} s\n")
+        f.write("-" * 40 + "\n")
+        f.write(f"Calculation: ({timer_res:.1e} / {delta_time:.6f}) * 100%\n")
+        f.write("-" * 40 + "\n")
+        f.write(f"RELATIVE ERROR: {rel_error:.8f} %\n")
+
+        if rel_error < 1.0:
+            f.write("STATUS: COMPLIANT (Error is below 1%)\n")
+        else:
+            f.write("STATUS: NON-COMPLIANT (Increase 'n' to extend time)\n")
         f.write("=" * 40 + "\n")
     print("Done!")
 
