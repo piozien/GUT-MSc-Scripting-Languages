@@ -395,3 +395,6 @@ poetry.toml
 
 # LSP config files
 pyrightconfig.json
+ex3/.idea/ex3.iml
+ex3/.idea/inspectionProfiles/profiles_settings.xml
+*.xml
